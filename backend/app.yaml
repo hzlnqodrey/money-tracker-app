@@ -1,2 +1,11 @@
-runtime: nodejs16
+runtime: nodejs
 service: backend
+
+env: flex
+env_variables:
+  SQL_USER: mta_admin
+  SQL_PASSWORD: 123456
+  SQL_DATABASE: mta_app
+  INSTANCE_CONNECTION_NAME: submission-mgce-hazlan12:asia-southeast2:db-money-tracker-app
+beta_settings:
+  cloud_sql_instances: submission-mgce-hazlan12:asia-southeast2:db-money-tracker-app

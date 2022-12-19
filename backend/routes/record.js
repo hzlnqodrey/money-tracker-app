@@ -9,13 +9,20 @@ const multer = Multer({
     fileSize: 5 * 1024 * 1024
 })
 
+var config = {
+    user: process.env.SQL_USER,
+    database: process.env.SQL_DATABASE,
+    password: process.env.SQL_PASSWORD
+}
+
+if (process.env.INSTANCE_CONNECTION_NAME && process.env.NODE_ENV === 'production') {
+    config.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+}
+
 // TODO: Sesuaikan konfigurasi database
-const connection = mysql.createConnection({
-    host: 'public_ip_sql_instance_Anda',
-    user: 'root',
-    database: 'nama_database_Anda',
-    password: 'password_sql_Anda'
-})
+const connection = mysql.createConnection(config)
+
+connection.connect();
 
 router.get("/dashboard", (req, res) => {
     const query = "select (select count(*) from records where month(records.date) = month(now()) AND year(records.date) = year(now())) as month_records, (select sum(amount) from records) as total_amount;"
